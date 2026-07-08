@@ -45,6 +45,7 @@ function Leistungen() {
 /* Büro-Bot-Tanzvideo: Server liefert MP4 ohne Range-Support — Datei komplett laden und als Blob füttern (spielt 1×, kein Loop). */
 function BuerobotVideo() {
   const ref = React.useRef(null);
+  const [failed, setFailed] = React.useState(false);
   React.useEffect(() => {
     let url = null, cancelled = false;
     fetch('../../assets/buerobot-dance.mp4')
@@ -57,9 +58,19 @@ function BuerobotVideo() {
         v.src = url;
         v.play().catch(() => {});
       })
-      .catch(() => {});
+      .catch(() => { if (!cancelled) setFailed(true); });
     return () => { cancelled = true; if (url) URL.revokeObjectURL(url); };
   }, []);
+  if (failed) {
+    return (
+      <img
+        data-comment-anchor="tanzender-roboter"
+        src="../../assets/buerobot-phone.jpg"
+        alt="Büro-Bot am Telefon"
+        style={{ width: '100%', maxWidth: 600, aspectRatio: '16 / 9', objectFit: 'cover', display: 'block', borderRadius: 18 }}
+      />
+    );
+  }
   return (
     <video
       data-comment-anchor="tanzender-roboter"
@@ -108,7 +119,7 @@ function Ablauf() {
         <ol style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 22, listStyle: 'none', margin: 0, padding: 0 }}>
           <StepCard number="01" badge="Kostenlos & unverbindlich" title="Erstgespräch">Wir hören zu, klären Ziele und Herausforderungen und zeigen den nächsten sinnvollen Schritt – ohne Fachchinesisch und ohne Verkaufsdruck.</StepCard>
           <StepCard number="02" title="Analyse & Roadmap">Wir priorisieren die wirksamsten Hebel in Ihrem Unternehmen und entwickeln eine klare Roadmap für Entscheidungen, Prozesse und Automatisierung.</StepCard>
-          <StepCard number="03" title="Umsetzung & Begleitung">Wir setzen um, befähigen Ihr Team im sicheren Umgang mit KI und bleiben langfristig an Ihrer Seite – bis Resultate im Alltag sichtbar sind.</StepCard>
+          <StepCard number="03" title="Umsetzung & Begleitung">Wir setzen um und befähigen Ihr Team im sicheren Umgang mit KI. Erste Resultate zeigen sich schnell im Alltag – und wir bleiben langfristig an Ihrer Seite.</StepCard>
         </ol>
         <div id="datenschutz" style={{ marginTop: 22, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(380px, 100%), 1fr))', gap: '32px 56px', alignItems: 'center', background: 'var(--surface-card-sand)', border: '1px solid var(--border-strong)', borderRadius: 22, padding: '40px 38px', boxSizing: 'border-box' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>

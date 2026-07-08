@@ -54,7 +54,14 @@ function App() {
   return (
     <div>
       <div style={{ position: 'sticky', top: 0, zIndex: 60 }}>
-        <SiteHeader
+        <div className="header-desktop">
+          <SiteHeader
+            logoSrc="../../assets/logo-lockup-terra.png"
+            links={NAV_LINKS}
+            active={active}
+          />
+        </div>
+        <MobileHeader
           logoSrc="../../assets/logo-lockup-terra.png"
           links={NAV_LINKS}
           active={active}

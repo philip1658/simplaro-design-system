@@ -1,0 +1,85 @@
+/* ============================================================
+   simplaro.ch — Mobile-Optimierung
+   Responsive Overrides über den Inline-Styles der Sektionen.
+   Breakpoints: 1120 · 920 (Header) · 700 (Phones) · 480 (klein)
+   ============================================================ */
+
+/* Mobile-Header standardmässig aus (Desktop zeigt SiteHeader) */
+.header-mobile { display: none; }
+.chat-fab-short { display: none; }
+
+/* Touch: kein graues Tap-Highlight */
+a, button, summary { -webkit-tap-highlight-color: transparent; }
+
+/* ── ≤1120px: Hero-Sprechblase ausblenden ────────────────── */
+@media (max-width: 1120px) {
+  .hero-stamp { display: none !important; }
+}
+
+/* ── ≤920px: Burger-Header statt Desktop-Nav ─────────────── */
+@media (max-width: 920px) {
+  .header-desktop { display: none; }
+  .header-mobile { display: block; }
+}
+
+/* ── ≤700px: Kern-Optimierung für Phones ─────────────────── */
+@media (max-width: 700px) {
+  html, body { overflow-x: hidden; }
+
+  /* Hero: svh statt vh (mobile Adressleiste), kompakte Bühne */
+  #top { height: 100svh !important; min-height: 560px; }
+  .hero-headline { top: 12vh !important; padding: 0 22px; }
+  #top h1 { font-size: clamp(29px, 8.4vw, 40px) !important; hyphens: auto; overflow-wrap: break-word; }
+  .hero-pills { gap: 8px !important; margin-top: 18px !important; padding: 0 20px; }
+  .hero-pill { white-space: normal !important; text-align: center; padding: 8px 16px !important; font-size: 13px !important; }
+  .hero-robot { height: 44svh !important; bottom: 1svh !important; }
+  .hero-robot > div { left: -6px !important; } /* Roboter mobil leicht nach links */
+  .hero-brand, .hero-brand-link { display: none !important; }
+  .hero-vignette { left: 0 !important; top: 0 !important; }
+
+  /* Sektionen: kompakteres Padding, saubere Umbrüche */
+  main section > div { padding: 56px 20px !important; }
+  main h2, main h3 { overflow-wrap: break-word; hyphens: auto; }
+
+  /* Leistungen: schmale Nummern-Spalte, Pfeil weg */
+  #leistungen article { grid-template-columns: 30px 1fr !important; gap: 16px !important; padding: 22px 2px !important; }
+  #leistungen article > i { display: none !important; }
+
+  /* Karten: engeres Innen-Padding */
+  #datenschutz { padding: 30px 22px !important; }
+  #ablauf ol li { padding: 28px 22px !important; }
+  #begleitung article { padding: 32px 24px !important; }
+  #faq > div { gap: 32px !important; }
+
+  /* Statements & Kontakt: Headline-Grössen fürs Phone */
+  #orientierung h2 { font-size: clamp(32px, 9.7vw, 52px) !important; }
+  section[data-screen-label="Versprechen"] h2 { font-size: clamp(30px, 9vw, 44px) !important; }
+  #kontakt h2 { font-size: clamp(30px, 8.6vw, 46px) !important; }
+
+  /* Kontakt-CTAs: untereinander, volle Tap-Breite */
+  #kontakt a { width: min(100%, 340px); }
+
+  /* Footer: zentriert, Safe-Area unten */
+  footer > div { justify-content: center !important; text-align: center; padding: 30px 20px calc(30px + env(safe-area-inset-bottom)) !important; }
+
+  /* Chat: kompakter Button, grosses Panel, kein iOS-Zoom */
+  .chat-root { right: 14px !important; bottom: calc(14px + env(safe-area-inset-bottom)) !important; }
+  .chat-root > button { padding: 13px 20px !important; font-size: 14.5px !important; }
+  .chat-fab-long { display: none; }
+  .chat-fab-short { display: inline; }
+  .chat-panel { width: calc(100vw - 28px) !important; height: min(74svh, 560px) !important; }
+  .chat-input { font-size: 16px !important; }
+  .chat-send { min-width: 52px; }
+}
+
+/* ── ≤480px: schmale Phones (360–430px) ──────────────────── */
+@media (max-width: 480px) {
+  #top h1 { font-size: clamp(27px, 8.6vw, 34px) !important; }
+  main section > div { padding: 48px 18px !important; }
+}
+
+/* Menü-Overlay: sanfte Einblendung */
+@keyframes mobileMenuIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

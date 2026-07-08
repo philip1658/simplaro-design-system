@@ -1,50 +1,16 @@
-<!-- @dsCard group="Website" viewport="1440x900" name="simplaro.ch — Landingpage" subtitle="Klickbare Recreation: Hero, Leistungen, Büro-Bot, Pakete, FAQ, Kontakt, Chat" -->
+<!-- @dsCard group="Website" viewport="1440x900" name="simplaro.ch — Landingpage" subtitle="Klickbare Recreation: Hero, Leistungen, Büro-Bot, Pakete, FAQ, Kontakt, Chat — mobil optimiert" -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>simplaro.ch — UI-Kit</title>
 <link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="mobile.css">
 <style>
   html { scroll-behavior: smooth; }
   a { color: var(--link); }
   a:hover { color: var(--link-hover); }
-  @media (max-width: 1120px) {
-    .hero-stamp { display: none !important; }
-  }
-  /* ── Mobile ────────────────────────────────────────────── */
-  @media (max-width: 920px) {
-    /* Header: nur Logo + CTA, kompakter */
-    header > div { padding: 14px 18px !important; }
-    header img { height: 42px !important; }
-    nav[aria-label="Hauptnavigation"] { gap: 14px !important; }
-    nav[aria-label="Hauptnavigation"] > a:not([href="#kontakt"]) { display: none !important; }
-    nav[aria-label="Hauptnavigation"] > a[href="#kontakt"] { padding: 11px 20px !important; font-size: 15px !important; }
-  }
-  @media (max-width: 700px) {
-    /* Hero: Headline mit Rand, Säulen-Pills dürfen umbrechen */
-    #top h1 { padding: 0 18px; }
-    #top h1 + div { padding: 0 16px; gap: 8px !important; }
-    #top h1 + div > span { white-space: normal !important; padding: 8px 14px !important; }
-    /* Büro-Bot etwas kleiner, damit Headline+Pills Platz haben */
-    #top > div[style*="56vh"] { height: 44vh !important; }
-    /* Markenzeile zentriert, SIMPLARO.CH-Link ausblenden */
-    #top > div[style*="0.16em"] { left: 0 !important; right: 0 !important; text-align: center; font-size: 9.5px !important; }
-    #top > a[href="#kontakt"] { display: none !important; }
-    /* Sektionen: schmaleres Seiten-Padding */
-    section > div { padding-left: 20px !important; padding-right: 20px !important; }
-    /* Sicherheitsnetz gegen horizontales Scrollen */
-    html, body { overflow-x: hidden; }
-    /* Lange Wörter (z.B. Unternehmensentwicklung) sauber trennen */
-    section h2, section h3 { overflow-wrap: break-word; hyphens: auto; }
-  }
-  @media (max-width: 480px) {
-    /* Schmale Phones: Logo + CTA kompakt genug für 360–430px */
-    header img { height: 34px !important; }
-    header > div { padding: 12px 14px !important; }
-    nav[aria-label="Hauptnavigation"] > a[href="#kontakt"] { padding: 10px 15px !important; font-size: 13.5px !important; }
-  }
 </style>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -57,6 +23,7 @@
 <script type="text/babel" src="sections-main.jsx"></script>
 <script type="text/babel" src="sections-lower.jsx"></script>
 <script type="text/babel" src="chat-widget.jsx"></script>
+<script type="text/babel" src="mobile-nav.jsx"></script>
 <script type="text/babel" src="tweaks-panel.jsx"></script>
 <script type="text/babel" src="app.jsx"></script>
 </body>

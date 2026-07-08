@@ -25,7 +25,7 @@ function Hero({ tweaks }) {
 
       {/* Büro-Bot-Bühne — unten verankert; Maske lässt die Antenne frei (solid ab 7 % Bildhöhe).
           Zentrierung über Flex-Wrapper (breathe-Keyframes überschreiben transform!). */}
-      <div style={{ position: 'absolute', left: 0, right: 0, bottom: `${t.robotBottom}vh`, height: `${t.robotHeight}vh`, display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
+      <div className="hero-robot" style={{ position: 'absolute', left: 0, right: 0, bottom: `${t.robotBottom}vh`, height: `${t.robotHeight}vh`, display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
         <div style={{ position: 'relative', left: `${t.robotX}vw`, height: '100%', aspectRatio: '16 / 9', flex: 'none', animation: 'breathe 6.5s ease-in-out infinite' }}>
           <img
             src="../../assets/buerobot-poster.jpg"
@@ -55,27 +55,27 @@ function Hero({ tweaks }) {
       </div>
 
       {/* Headline */}
-      <div style={{ position: 'absolute', zIndex: 30, left: 0, right: 0, top: `${t.headlineTop}vh`, pointerEvents: 'none', color: 'var(--cream-50)', textAlign: 'center' }}>
+      <div className="hero-headline" style={{ position: 'absolute', zIndex: 30, left: 0, right: 0, top: `${t.headlineTop}vh`, pointerEvents: 'none', color: 'var(--cream-50)', textAlign: 'center' }}>
         <h1 style={{ margin: 0, fontSize: 'clamp(30px, 3.7vw, 66px)', fontWeight: 600, letterSpacing: '-0.02em', lineHeight: 1.05 }}>
           Ihr Transformationspartner im KI-Zeitalter<br />
         </h1>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 'clamp(10px, 1.4vw, 18px)', flexWrap: 'wrap', marginTop: 'clamp(18px, 2.6vh, 30px)', fontSize: 'clamp(12.5px, 1.05vw, 16.5px)', fontWeight: 600, letterSpacing: '0.06em' }}>
-          <span style={{ display: 'flex', alignItems: 'baseline', gap: 9, whiteSpace: 'nowrap', background: 'rgba(255,244,236,0.12)', border: '1px solid rgba(255,255,255,0.32)', borderRadius: 999, padding: '10px 20px', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}><span style={{ fontSize: '0.78em', color: 'var(--peach-200)' }}>01</span><span style={{ fontWeight: 700 }}>Standortbestimmung</span></span>
-          <span style={{ display: 'flex', alignItems: 'baseline', gap: 9, whiteSpace: 'nowrap', background: 'rgba(255,244,236,0.12)', border: '1px solid rgba(255,255,255,0.32)', borderRadius: 999, padding: '10px 20px', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}><span style={{ fontSize: '0.78em', color: 'var(--peach-200)' }}>02</span><span style={{ fontWeight: 700 }}>Implementierung</span></span>
-          <span style={{ display: 'flex', alignItems: 'baseline', gap: 9, whiteSpace: 'nowrap', background: 'rgba(255,244,236,0.12)', border: '1px solid rgba(255,255,255,0.32)', borderRadius: 999, padding: '10px 20px', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}><span style={{ fontSize: '0.78em', color: 'var(--peach-200)' }}>03</span><span style={{ fontWeight: 700 }}>Trainings &amp; Nachhaltige Begleitung</span></span>
+        <div className="hero-pills" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 'clamp(10px, 1.4vw, 18px)', flexWrap: 'wrap', marginTop: 'clamp(18px, 2.6vh, 30px)', fontSize: 'clamp(12.5px, 1.05vw, 16.5px)', fontWeight: 600, letterSpacing: '0.06em' }}>
+          <span className="hero-pill" style={{ display: 'flex', alignItems: 'baseline', gap: 9, whiteSpace: 'nowrap', background: 'rgba(255,244,236,0.12)', border: '1px solid rgba(255,255,255,0.32)', borderRadius: 999, padding: '10px 20px', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}><span style={{ fontSize: '0.78em', color: 'var(--peach-200)' }}>01</span><span style={{ fontWeight: 700 }}>Standortbestimmung</span></span>
+          <span className="hero-pill" style={{ display: 'flex', alignItems: 'baseline', gap: 9, whiteSpace: 'nowrap', background: 'rgba(255,244,236,0.12)', border: '1px solid rgba(255,255,255,0.32)', borderRadius: 999, padding: '10px 20px', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}><span style={{ fontSize: '0.78em', color: 'var(--peach-200)' }}>02</span><span style={{ fontWeight: 700 }}>Implementierung</span></span>
+          <span className="hero-pill" style={{ display: 'flex', alignItems: 'baseline', gap: 9, whiteSpace: 'nowrap', background: 'rgba(255,244,236,0.12)', border: '1px solid rgba(255,255,255,0.32)', borderRadius: 999, padding: '10px 20px', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}><span style={{ fontSize: '0.78em', color: 'var(--peach-200)' }}>03</span><span style={{ fontWeight: 700 }}>Trainings &amp; Nachhaltige Begleitung</span></span>
         </div>
       </div>
 
       {/* Markenzeilen unten */}
-      <div style={{ position: 'absolute', zIndex: 40, left: '3.5vw', bottom: '4.6vh', fontSize: 11, letterSpacing: '0.16em', color: 'var(--cream-50)' }}>
+      <div className="hero-brand" style={{ position: 'absolute', zIndex: 40, left: '3.5vw', bottom: '4.6vh', fontSize: 11, letterSpacing: '0.16em', color: 'var(--cream-50)' }}>
         BUCHHALTUNG&nbsp;&nbsp;·&nbsp;&nbsp;ADMINISTRATION&nbsp;&nbsp;·&nbsp;&nbsp;KI-SUPPORT
       </div>
-      <a href="#kontakt" style={{ position: 'absolute', zIndex: 40, right: '3.5vw', bottom: '4.6vh', fontSize: 11, letterSpacing: '0.18em', color: 'var(--cream-50)', textDecoration: 'none' }}>
+      <a href="#kontakt" className="hero-brand-link" style={{ position: 'absolute', zIndex: 40, right: '3.5vw', bottom: '4.6vh', fontSize: 11, letterSpacing: '0.18em', color: 'var(--cream-50)', textDecoration: 'none' }}>
         SIMPLARO.CH
       </a>
 
       {/* Vignette (per Direkt-Edit verschoben) */}
-      {t.vignette ? <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'radial-gradient(125% 120% at 50% 42%, rgba(0,0,0,0) 56%, rgba(62,22,6,0.30) 100%)', left: -528, top: 274 }}></div> : null}
+      {t.vignette ? <div className="hero-vignette" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'radial-gradient(125% 120% at 50% 42%, rgba(0,0,0,0) 56%, rgba(62,22,6,0.30) 100%)', left: -528, top: 274 }}></div> : null}
     </section>
   );
 }
