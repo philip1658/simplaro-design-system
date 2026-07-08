@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Simplaro Erstanalyse – Kurzer Fragebogen</title>
+<link rel="icon" type="image/png" href="assets/logo-mark-terra.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FBF4EE;
+    --bg-warm: #F4EDE1;
+    --bg-deep: #EAE0CC;
+    --card: #FFFDF8;
+    --ink: #1C1613;
+    --ink-soft: #5A524B;
+    --ink-faint: #8C8178;
+    --terra: #B25222;
+    --terra-dark: #9C4517;
+    --terra-bright: #E2652C;
+    --peach: #FFD9C2;
+    --peach-soft: #FFF3E8;
+    --line: #E2D5BC;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Fortschrittsbalken */
+  .progress-wrap {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    height: 6px; background: var(--bg-deep);
+  }
+  .progress-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--terra), var(--terra-bright));
+    border-radius: 0 999px 999px 0;
+    transition: width 0.35s ease;
+  }
+
+  .shell { max-width: 720px; margin: 0 auto; padding: 34px 18px 80px; }
+
+  /* Kopf */
+  header { text-align: center; margin-bottom: 26px; }
+  header img.wordmark { width: 168px; max-width: 55%; height: auto; margin-bottom: 22px; }
+  .hero-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 26px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px -12px rgba(60,20,5,0.18);
+    text-align: left;
+  }
+  .hero-img {
+    display: block; width: 100%; height: 210px;
+    object-fit: cover; object-position: center 30%;
+  }
+  .hero-body { padding: 26px 28px 30px; }
+  h1 {
+    font-size: clamp(24px, 5.5vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 10px 0 12px;
+  }
+  .hero-body p { color: var(--ink-soft); font-size: 16px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--peach-soft);
+    color: var(--terra-dark);
+    border: 1px solid var(--peach);
+    border-radius: 999px;
+    padding: 6px 14px;
+  }
+
+  /* Frage-Blöcke */
+  section.block {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 26px 28px;
+    margin-top: 22px;
+    box-shadow: 0 10px 26px rgba(62,22,6,0.06);
+  }
+  .block-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .block-num {
+    flex: none;
+    width: 34px; height: 34px; border-radius: 999px;
+    background: var(--terra); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px;
+  }
+  .block h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.015em; }
+  .block-intro { color: var(--ink-faint); font-size: 14px; margin-bottom: 4px; }
+
+  fieldset { border: 0; margin-top: 20px; }
+  legend, .q-label {
+    display: block;
+    font-weight: 700; font-size: 16px;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .hint { font-weight: 500; color: var(--ink-faint); font-size: 13.5px; margin: -6px 0 10px; }
+  .req { color: var(--terra-bright); }
+
+  /* Chips (Radio + Checkbox) */
+  .chips { display: flex; flex-wrap: wrap; gap: 9px; }
+  .chips label {
+    position: relative; cursor: pointer;
+    display: inline-flex; align-items: center;
+    border: 1.5px solid var(--line);
+    background: var(--bg);
+    border-radius: 999px;
+    padding: 9px 16px;
+    font-size: 15px; font-weight: 600;
+    color: var(--ink-soft);
+    transition: all 0.15s ease;
+    user-select: none;
+  }
+  .chips label:hover { border-color: var(--terra-bright); color: var(--ink); }
+  .chips input { position: absolute; opacity: 0; pointer-events: none; }
+  .chips input:checked + span { color: inherit; }
+  .chips label:has(input:checked) {
+    background: var(--peach-soft);
+    border-color: var(--terra);
+    color: var(--terra-dark);
+    box-shadow: 0 2px 8px rgba(178,82,34,0.18);
+  }
+  .chips label:has(input:focus-visible) { outline: 2px solid var(--terra-bright); outline-offset: 2px; }
+
+  /* Textfelder */
+  input[type="text"], textarea {
+    width: 100%;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px; font-weight: 600;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    padding: 13px 16px;
+    transition: border-color 0.15s ease;
+  }
+  textarea { min-height: 96px; resize: vertical; font-weight: 500; }
+  input[type="text"]:focus, textarea:focus {
+    outline: none; border-color: var(--terra);
+    background: #fff;
+  }
+  input::placeholder, textarea::placeholder { color: var(--ink-faint); font-weight: 500; }
+
+  /* Absenden */
+  .submit-zone { text-align: center; margin-top: 30px; }
+  button.send {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 18px; font-weight: 700;
+    color: #fff; background: var(--terra);
+    border: 0; border-radius: 999px;
+    padding: 17px 44px;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(62,22,6,0.28);
+    transition: all 0.15s ease;
+  }
+  button.send:hover { background: var(--terra-dark); transform: translateY(-1px); }
+  button.send:disabled { opacity: 0.6; cursor: wait; transform: none; }
+  .submit-note { color: var(--ink-faint); font-size: 13.5px; margin-top: 14px; }
+  .form-error {
+    display: none;
+    margin-top: 16px; padding: 13px 18px;
+    background: #FBEAE5; color: #A83A08;
+    border: 1px solid #E98C58; border-radius: 14px;
+    font-weight: 600; font-size: 15px;
+  }
+
+  /* Erfolg */
+  #success { display: none; text-align: center; padding-top: 4vh; }
+  #success .hero-card { text-align: center; }
+  #success .hero-body { padding: 30px 28px 38px; }
+  #success h1 { margin-top: 4px; }
+  .potential-box {
+    margin: 22px 0 6px;
+    background: var(--peach-soft);
+    border: 1.5px solid var(--peach);
+    border-radius: 20px;
+    padding: 20px 22px 22px;
+    text-align: center;
+  }
+  .potential-box .mono { color: var(--terra-dark); }
+  .potential-amount {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: clamp(22px, 6vw, 30px);
+    font-weight: 600;
+    color: var(--terra-dark);
+    letter-spacing: -0.02em;
+    margin: 8px 0 6px;
+  }
+  .potential-box p { font-size: 14.5px; color: var(--ink-soft); }
+  .potential-chf {
+    color: var(--ink-soft) !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    font-size: 14px !important;
+    margin: -2px 0 10px;
+  }
+  .potential-note { font-size: 12.5px !important; color: var(--ink-faint) !important; margin-top: 10px; }
+
+  footer {
+    text-align: center; margin-top: 38px;
+    color: var(--ink-faint); font-size: 13px;
+  }
+  footer a { color: var(--terra); font-weight: 600; text-decoration: none; }
+
+  @media (max-width: 480px) {
+    .shell { padding: 26px 12px 60px; }
+    section.block, .hero-body { padding-left: 20px; padding-right: 20px; }
+    section.block { padding-top: 22px; padding-bottom: 22px; border-radius: 20px; }
+    .hero-img { height: 165px; }
+    .chips label { padding: 10px 15px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-wrap" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+
+<div class="shell">
+
+  <header>
+    <img class="wordmark" src="assets/logo-wordmark-terra.png" alt="Simplaro">
+    <div class="hero-card">
+      <img class="hero-img" src="assets/buerobot-phone.jpg" alt="Simplaro Bürobot mit Checkliste">
+      <div class="hero-body">
+        <span class="pill mono">⏱ Dauert keine 10 Minuten</span>
+        <h1>Kurzer Fragebogen vor unserem Termin</h1>
+        <p>Damit wir uns optimal auf das Gespräch vorbereiten können, möchten wir Ihren Betrieb ein wenig kennenlernen. Das meiste ist Ankreuzen — es gibt keine falschen Antworten, und Sie müssen nichts nachschlagen. Einfach so beantworten, wie es bei Ihnen im Alltag wirklich läuft.</p>
+      </div>
+    </div>
+  </header>
+
+  <form id="fragebogen" novalidate>
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
+
+    <!-- Block 1: Ihre Firma -->
+    <section class="block">
+      <div class="block-head"><div class="block-num">1</div><h2>Ihre Firma</h2></div>
+
+      <fieldset>
+        <label class="q-label" for="firma_name">Firma und Ihr Name <span class="req">*</span></label>
+        <input type="text" id="firma_name" name="Firma und Name" required placeholder="z.B. Muster Sanitär GmbH, Peter Muster">
+      </fieldset>
+
+      <fieldset>
+        <label class="q-label" for="branche">Was macht Ihre Firma? <span class="req">*</span></label>
+        <input type="text" id="branche" name="Branche und Tätigkeit" required placeholder="z.B. Plattenleger, Treuhand, Malergeschäft, Physiotherapie …">
+      </fieldset>
+
+      <fieldset>
+        <legend>Wie viele Personen arbeiten bei Ihnen?</legend>
+        <div class="chips">
+          <label><input type="radio" name="Mitarbeitende" value="Nur ich"><span>Nur ich</span></label>
+          <label><input type="radio" name="Mitarbeitende" value="2–5"><span>2–5</span></label>
+          <label><input type="radio" name="Mitarbeitende" value="6–15"><span>6–15</span></label>
+          <label><input type="radio" name="Mitarbeitende" value="16–50"><span>16–50</span></label>
+          <label><input type="radio" name="Mitarbeitende" value="Mehr als 50"><span>Mehr als 50</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Wer erledigt bei Ihnen die Büroarbeit?</legend>
+        <p class="hint">Mehrfachauswahl möglich.</p>
+        <div class="chips">
+          <label><input type="checkbox" name="Büroarbeit erledigt" value="Ich selbst"><span>Ich selbst</span></label>
+          <label><input type="checkbox" name="Büroarbeit erledigt" value="Partner:in / Familie"><span>Partner:in / Familie</span></label>
+          <label><input type="checkbox" name="Büroarbeit erledigt" value="Mitarbeiter:in"><span>Mitarbeiter:in</span></label>
+          <label><input type="checkbox" name="Büroarbeit erledigt" value="Extern (z.B. Treuhänder)"><span>Extern (z.B. Treuhänder)</span></label>
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- Block 2: Ihre Werkzeuge -->
+    <section class="block">
+      <div class="block-head"><div class="block-num">2</div><h2>Ihre Werkzeuge</h2></div>
+      <p class="block-intro">Kreuzen Sie einfach an, was Sie heute nutzen — Mehrfachauswahl überall möglich.</p>
+
+      <fieldset>
+        <legend>E-Mail &amp; Office</legend>
+        <div class="chips">
+          <label><input type="checkbox" name="Tools E-Mail und Office" value="Microsoft 365 / Outlook"><span>Microsoft 365 / Outlook</span></label>
+          <label><input type="checkbox" name="Tools E-Mail und Office" value="Google (Gmail/Workspace)"><span>Google (Gmail)</span></label>
+          <label><input type="checkbox" name="Tools E-Mail und Office" value="Bluewin / GMX / Hostpoint o.ä."><span>Bluewin / GMX o.ä.</span></label>
+          <label><input type="checkbox" name="Tools E-Mail und Office" value="Word/Excel lokal installiert"><span>Word/Excel auf dem PC</span></label>
+          <label><input type="checkbox" name="Tools E-Mail und Office" value="Weiss nicht genau"><span>Weiss nicht genau</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Offerten &amp; Rechnungen</legend>
+        <div class="chips">
+          <label><input type="checkbox" name="Tools Offerten und Rechnungen" value="Word-/Excel-Vorlage"><span>Word-/Excel-Vorlage</span></label>
+          <label><input type="checkbox" name="Tools Offerten und Rechnungen" value="Bexio"><span>Bexio</span></label>
+          <label><input type="checkbox" name="Tools Offerten und Rechnungen" value="Klara"><span>Klara</span></label>
+          <label><input type="checkbox" name="Tools Offerten und Rechnungen" value="Branchensoftware"><span>Branchensoftware</span></label>
+          <label><input type="checkbox" name="Tools Offerten und Rechnungen" value="Von Hand / Papier"><span>Von Hand / Papier</span></label>
+          <label><input type="checkbox" name="Tools Offerten und Rechnungen" value="Macht jemand anderes für mich"><span>Macht jemand anderes</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Buchhaltung</legend>
+        <div class="chips">
+          <label><input type="checkbox" name="Tools Buchhaltung" value="Treuhänder macht alles"><span>Treuhänder macht alles</span></label>
+          <label><input type="checkbox" name="Tools Buchhaltung" value="Bexio"><span>Bexio</span></label>
+          <label><input type="checkbox" name="Tools Buchhaltung" value="Banana"><span>Banana</span></label>
+          <label><input type="checkbox" name="Tools Buchhaltung" value="Abacus"><span>Abacus</span></label>
+          <label><input type="checkbox" name="Tools Buchhaltung" value="Excel"><span>Excel</span></label>
+          <label><input type="checkbox" name="Tools Buchhaltung" value="Belege sammeln, Rest extern"><span>Belege sammeln, Rest extern</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Termine &amp; Planung</legend>
+        <div class="chips">
+          <label><input type="checkbox" name="Tools Termine und Planung" value="Papieragenda"><span>Papieragenda</span></label>
+          <label><input type="checkbox" name="Tools Termine und Planung" value="Outlook-/Google-Kalender"><span>Outlook-/Google-Kalender</span></label>
+          <label><input type="checkbox" name="Tools Termine und Planung" value="WhatsApp / Telefon"><span>WhatsApp / Telefon</span></label>
+          <label><input type="checkbox" name="Tools Termine und Planung" value="Planungstool / Software"><span>Planungstool / Software</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Dokumente &amp; Ablage</legend>
+        <div class="chips">
+          <label><input type="checkbox" name="Tools Ablage" value="Papierordner"><span>Papierordner</span></label>
+          <label><input type="checkbox" name="Tools Ablage" value="Ordner auf dem PC"><span>Ordner auf dem PC</span></label>
+          <label><input type="checkbox" name="Tools Ablage" value="Firmenserver / NAS"><span>Firmenserver / NAS</span></label>
+          <label><input type="checkbox" name="Tools Ablage" value="Cloud (Dropbox, OneDrive, Google Drive …)"><span>Cloud (Dropbox, OneDrive …)</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label class="q-label" for="branchensoftware">Nutzen Sie spezielle Branchen-Software?</label>
+        <input type="text" id="branchensoftware" name="Branchensoftware" placeholder="z.B. Programm für Ihre Branche — Name genügt, sonst leer lassen">
+      </fieldset>
+    </section>
+
+    <!-- Block 3: Ihre Zeitfresser -->
+    <section class="block">
+      <div class="block-head"><div class="block-num">3</div><h2>Ihre Zeitfresser</h2></div>
+
+      <fieldset>
+        <legend>Welche Aufgaben kommen bei Ihnen immer wieder — und nerven?</legend>
+        <p class="hint">Alles ankreuzen, was zutrifft.</p>
+        <div class="chips">
+          <label><input type="checkbox" name="Wiederkehrende Aufgaben" value="Offerten schreiben"><span>Offerten schreiben</span></label>
+          <label><input type="checkbox" name="Wiederkehrende Aufgaben" value="Rechnungen und Mahnungen"><span>Rechnungen &amp; Mahnungen</span></label>
+          <label><input type="checkbox" name="Wiederkehrende Aufgaben" value="E-Mails beantworten"><span>E-Mails beantworten</span></label>
+          <label><input type="checkbox" name="Wiederkehrende Aufgaben" value="Terminkoordination"><span>Terminkoordination</span></label>
+          <label><input type="checkbox" name="Wiederkehrende Aufgaben" value="Dokumente suchen und ablegen"><span>Dokumente suchen &amp; ablegen</span></label>
+          <label><input type="checkbox" name="Wiederkehrende Aufgaben" value="Rapporte und Arbeitszeiten erfassen"><span>Rapporte / Arbeitszeiten</span></label>
+          <label><input type="checkbox" name="Wiederkehrende Aufgaben" value="Belege für die Buchhaltung"><span>Belege für die Buchhaltung</span></label>
+          <label><input type="checkbox" name="Wiederkehrende Aufgaben" value="Social Media und Werbung"><span>Social Media / Werbung</span></label>
+          <label><input type="checkbox" name="Wiederkehrende Aufgaben" value="Lohnadministration"><span>Lohnadministration</span></label>
+          <label><input type="checkbox" name="Wiederkehrende Aufgaben" value="Texte und Briefe formulieren"><span>Texte &amp; Briefe formulieren</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Wie viele Offerten schreiben Sie pro Monat?</legend>
+        <div class="chips">
+          <label><input type="radio" name="Offerten pro Monat" value="Keine / fast keine"><span>Keine / fast keine</span></label>
+          <label><input type="radio" name="Offerten pro Monat" value="1–5"><span>1–5</span></label>
+          <label><input type="radio" name="Offerten pro Monat" value="6–15"><span>6–15</span></label>
+          <label><input type="radio" name="Offerten pro Monat" value="16–40"><span>16–40</span></label>
+          <label><input type="radio" name="Offerten pro Monat" value="Mehr als 40"><span>Mehr als 40</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Wie lange brauchen Sie für eine typische Offerte?</legend>
+        <div class="chips">
+          <label><input type="radio" name="Dauer pro Offerte" value="Unter 30 Minuten"><span>Unter 30 Min.</span></label>
+          <label><input type="radio" name="Dauer pro Offerte" value="30–60 Minuten"><span>30–60 Min.</span></label>
+          <label><input type="radio" name="Dauer pro Offerte" value="1–2 Stunden"><span>1–2 Std.</span></label>
+          <label><input type="radio" name="Dauer pro Offerte" value="Mehr als 2 Stunden"><span>Mehr als 2 Std.</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Wie viele Rechnungen stellen Sie pro Monat?</legend>
+        <div class="chips">
+          <label><input type="radio" name="Rechnungen pro Monat" value="Keine / fast keine"><span>Keine / fast keine</span></label>
+          <label><input type="radio" name="Rechnungen pro Monat" value="1–10"><span>1–10</span></label>
+          <label><input type="radio" name="Rechnungen pro Monat" value="11–30"><span>11–30</span></label>
+          <label><input type="radio" name="Rechnungen pro Monat" value="31–100"><span>31–100</span></label>
+          <label><input type="radio" name="Rechnungen pro Monat" value="Mehr als 100"><span>Mehr als 100</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label class="q-label" for="zeitfresser_top">Was ist Ihr grösster einzelner Zeitfresser? <span class="req">*</span></label>
+        <p class="hint">Die eine Sache, bei der Sie denken: «Das kostet mich jede Woche viel zu viel Zeit.»</p>
+        <textarea id="zeitfresser_top" name="Grösster Zeitfresser" required placeholder="In Ihren eigenen Worten — 1–2 Sätze genügen."></textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>Wie viele Stunden pro Woche gehen bei Ihnen insgesamt für Büroarbeit drauf?</legend>
+        <p class="hint">Grobe Schätzung genügt — alle Personen zusammengezählt.</p>
+        <div class="chips">
+          <label><input type="radio" name="Bürostunden pro Woche" value="Weniger als 5"><span>Weniger als 5</span></label>
+          <label><input type="radio" name="Bürostunden pro Woche" value="5–10"><span>5–10</span></label>
+          <label><input type="radio" name="Bürostunden pro Woche" value="10–20"><span>10–20</span></label>
+          <label><input type="radio" name="Bürostunden pro Woche" value="Mehr als 20"><span>Mehr als 20</span></label>
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- Block 4: Digitalisierung & IT -->
+    <section class="block">
+      <div class="block-head"><div class="block-num">4</div><h2>Digitalisierung &amp; IT</h2></div>
+
+      <fieldset>
+        <legend>Wie läuft es bei Ihnen heute — eher Papier oder eher digital?</legend>
+        <div class="chips">
+          <label><input type="radio" name="Papier oder digital" value="Fast alles auf Papier"><span>Fast alles auf Papier</span></label>
+          <label><input type="radio" name="Papier oder digital" value="Gemischt, eher Papier"><span>Gemischt, eher Papier</span></label>
+          <label><input type="radio" name="Papier oder digital" value="Gemischt, eher digital"><span>Gemischt, eher digital</span></label>
+          <label><input type="radio" name="Papier oder digital" value="Fast alles digital"><span>Fast alles digital</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Wer kümmert sich um Ihre IT (Computer, Programme, Passwörter)?</legend>
+        <div class="chips">
+          <label><input type="radio" name="IT-Betreuung" value="Niemand so richtig"><span>Niemand so richtig</span></label>
+          <label><input type="radio" name="IT-Betreuung" value="Ich selbst"><span>Ich selbst</span></label>
+          <label><input type="radio" name="IT-Betreuung" value="Externer IT-Dienstleister"><span>Externer IT-Dienstleister</span></label>
+          <label><input type="radio" name="IT-Betreuung" value="Eigene IT-Person intern"><span>Eigene IT-Person intern</span></label>
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- Block 5: KI & Erwartungen -->
+    <section class="block">
+      <div class="block-head"><div class="block-num">5</div><h2>KI &amp; Ihre Erwartungen</h2></div>
+
+      <fieldset>
+        <legend>Haben Sie schon einmal KI ausprobiert (z.B. ChatGPT)?</legend>
+        <div class="chips">
+          <label><input type="radio" name="KI-Erfahrung" value="Noch nie"><span>Noch nie</span></label>
+          <label><input type="radio" name="KI-Erfahrung" value="Privat mal ausprobiert"><span>Privat mal ausprobiert</span></label>
+          <label><input type="radio" name="KI-Erfahrung" value="Geschäftlich gelegentlich"><span>Geschäftlich gelegentlich</span></label>
+          <label><input type="radio" name="KI-Erfahrung" value="Regelmässig im Einsatz"><span>Regelmässig im Einsatz</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label class="q-label" for="erwartungen">Was erhoffen Sie sich von unserem Termin?</label>
+        <p class="hint">Optional — aber es hilft uns, das Gespräch auf Sie zuzuschneiden.</p>
+        <textarea id="erwartungen" name="Erwartungen an den Termin" placeholder="z.B. «Weniger Abende im Büro», «Endlich verstehen, was KI für uns kann» …"></textarea>
+      </fieldset>
+    </section>
+
+    <div class="submit-zone">
+      <button type="submit" class="send" id="sendBtn">Antworten absenden →</button>
+      <div class="form-error" id="formError"></div>
+      <p class="submit-note">Ihre Antworten gehen direkt an Simplaro und werden ausschliesslich zur Vorbereitung unseres Termins verwendet.</p>
+    </div>
+  </form>
+
+  <!-- Erfolgs-Screen -->
+  <div id="success">
+    <div class="hero-card">
+      <img class="hero-img" src="assets/buerobot-phone.jpg" alt="Simplaro Bürobot">
+      <div class="hero-body">
+        <span class="pill mono">✓ Angekommen</span>
+        <h1 id="successTitle">Herzlichen Dank!</h1>
+        <p>Ihre Antworten sind bei uns eingetroffen. Wir schauen sie uns vor unserem Termin genau an — so können wir die gemeinsame Zeit voll für Ihre Themen nutzen.</p>
+        <div class="potential-box" id="potentialBox" style="display:none">
+          <span class="mono">💡 Ihre Ersteinschätzung</span>
+          <div class="potential-amount" id="potentialAmount"></div>
+          <div class="potential-chf mono" id="potentialChf"></div>
+          <p id="potentialText"></p>
+          <p id="potentialHebel" style="font-size:14px; color:var(--terra-dark); font-weight:600;"></p>
+          <p class="potential-note" id="potentialNote">Grobe Ersteinschätzung — was bei Ihnen wirklich drinliegt, schauen wir im Termin gemeinsam an.</p>
+        </div>
+        <p>Bis bald!<br><strong>Ihr Simplaro-Team</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <img src="assets/logo-mark-terra.png" alt="" width="26" height="29" style="opacity:0.85"><br>
+    Simplaro GmbH · Zürich · <a href="mailto:hallo@simplaro.ch">hallo@simplaro.ch</a>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var ENDPOINT = 'https://formspree.io/f/xvzjnjnv';
+  var WORKER_URL = 'https://simplaro-erstanalyse.philkrieger4.workers.dev';
+
+  var form = document.getElementById('fragebogen');
+  var bar = document.getElementById('progressBar');
+  var sendBtn = document.getElementById('sendBtn');
+  var errBox = document.getElementById('formError');
+
+  // Fortschritt: Anteil beantworteter Fragengruppen
+  var groupNames = (function () {
+    var names = [];
+    form.querySelectorAll('input[name], textarea[name]').forEach(function (el) {
+      if (el.name === '_gotcha') return;
+      if (names.indexOf(el.name) === -1) names.push(el.name);
+    });
+    return names;
+  })();
+
+  function updateProgress() {
+    var done = 0;
+    groupNames.forEach(function (name) {
+      var els = form.querySelectorAll('[name="' + CSS.escape(name) + '"]');
+      var answered = false;
+      els.forEach(function (el) {
+        if ((el.type === 'radio' || el.type === 'checkbox') ? el.checked : el.value.trim() !== '') answered = true;
+      });
+      if (answered) done++;
+    });
+    bar.style.width = Math.round((done / groupNames.length) * 100) + '%';
+  }
+  form.addEventListener('input', updateProgress);
+  form.addEventListener('change', updateProgress);
+
+  function showError(msg) {
+    errBox.textContent = msg;
+    errBox.style.display = 'block';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errBox.style.display = 'none';
+
+    // Pflichtfelder prüfen
+    var missing = null;
+    form.querySelectorAll('[required]').forEach(function (el) {
+      if (!missing && el.value.trim() === '') missing = el;
+    });
+    if (missing) {
+      showError('Bitte füllen Sie noch die mit * markierten Felder aus.');
+      missing.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      missing.focus({ preventScroll: true });
+      return;
+    }
+
+    var data = new FormData(form);
+    var firma = (data.get('Firma und Name') || '').toString().trim();
+    data.append('_subject', 'Simplaro Erstanalyse: ' + (firma || 'Neue Antwort'));
+
+    function fmtCHF(n) {
+      n = Math.round(n / 500) * 500;
+      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+    }
+    function fmtH(n) { return (Math.round(n * 2) / 2).toString().replace('.', ','); }
+
+    // Antworten als Objekt für die KI-Einschätzung
+    var antworten = {};
+    data.forEach(function (v, k) {
+      if (k === '_gotcha' || k === '_subject' || v === '') return;
+      antworten[k] = antworten[k] ? antworten[k] + ', ' + v : v;
+    });
+
+    // Fallback: konservative Formel (Routineanteil 40–55% × Automatisierungsgrad ~30–50% → netto 15–25%)
+    function fallbackAssessment() {
+      var bands = { 'Weniger als 5': [2, 5], '5–10': [5, 10], '10–20': [10, 20], 'Mehr als 20': [20, 30] };
+      var band = bands[data.get('Bürostunden pro Woche')];
+      if (!band) return null;
+      var aufgaben = data.getAll('Wiederkehrende Aufgaben').slice(0, 3);
+      return {
+        stunden_pro_woche_min: band[0] * 0.15,
+        stunden_pro_woche_max: band[1] * 0.25,
+        chf_pro_jahr_min: band[0] * 0.15 * 46 * 100,
+        chf_pro_jahr_max: band[1] * 0.25 * 46 * 100,
+        einschaetzung: 'So viel wiederkehrende Büroarbeit lässt sich bei Ihnen erfahrungsgemäss automatisieren' +
+          (aufgaben.length ? ' — vor allem bei: ' + aufgaben.join(', ') + '.' : '.'),
+        top_hebel: aufgaben,
+        vorbehalt: null
+      };
+    }
+
+    // KI-Einschätzung vom Simplaro-Worker (Claude); bei Fehler/Timeout → Formel-Fallback
+    function getAssessment() {
+      var ctrl = new AbortController();
+      var timer = setTimeout(function () { ctrl.abort(); }, 35000);
+      return fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ antworten: antworten }),
+        signal: ctrl.signal
+      }).then(function (res) {
+        clearTimeout(timer);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      }).then(function (a) {
+        if (typeof a.stunden_pro_woche_min !== 'number' || typeof a.chf_pro_jahr_min !== 'number') throw new Error('bad shape');
+        return a;
+      }).catch(function () {
+        clearTimeout(timer);
+        return fallbackAssessment();
+      });
+    }
+
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Ihre Antworten werden ausgewertet …';
+
+    getAssessment().then(function (a) {
+      if (a) {
+        data.append('Ersteinschätzung Sparpotenzial (auto)',
+          'ca. ' + fmtH(a.stunden_pro_woche_min) + '–' + fmtH(a.stunden_pro_woche_max) + ' Std./Woche' +
+          ' ≈ CHF ' + fmtCHF(a.chf_pro_jahr_min) + '–' + fmtCHF(a.chf_pro_jahr_max) + ' pro Jahr | ' +
+          a.einschaetzung +
+          (a.top_hebel && a.top_hebel.length ? ' | Hebel: ' + a.top_hebel.join(', ') : '') +
+          (a.vorbehalt ? ' | Vorbehalt: ' + a.vorbehalt : ''));
+      }
+
+      sendBtn.textContent = 'Wird gesendet …';
+      return fetch(ENDPOINT, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var vorname = firma.split(',').pop().trim().split(' ')[0];
+        if (vorname && firma.indexOf(',') !== -1) {
+          document.getElementById('successTitle').textContent = 'Herzlichen Dank, ' + vorname + '!';
+        }
+        if (a) {
+          document.getElementById('potentialAmount').textContent =
+            'ca. ' + fmtH(a.stunden_pro_woche_min) + '–' + fmtH(a.stunden_pro_woche_max) + ' Std. pro Woche';
+          document.getElementById('potentialChf').textContent =
+            '≈ CHF ' + fmtCHF(a.chf_pro_jahr_min) + '–' + fmtCHF(a.chf_pro_jahr_max) + ' pro Jahr';
+          document.getElementById('potentialText').textContent = a.einschaetzung;
+          document.getElementById('potentialHebel').textContent =
+            (a.top_hebel && a.top_hebel.length) ? 'Ihre grössten Hebel: ' + a.top_hebel.join(' · ') : '';
+          if (a.vorbehalt) {
+            document.getElementById('potentialNote').textContent =
+              a.vorbehalt + ' Was bei Ihnen wirklich drinliegt, schauen wir im Termin gemeinsam an.';
+          }
+          document.getElementById('potentialBox').style.display = 'block';
+        }
+        form.style.display = 'none';
+        document.querySelector('header').style.display = 'none';
+        document.getElementById('success').style.display = 'block';
+        bar.style.width = '100%';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }).catch(function () {
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Antworten absenden →';
+      showError('Hoppla — das Senden hat nicht geklappt. Bitte versuchen Sie es nochmals oder schicken Sie uns Ihre Antworten per E-Mail an hallo@simplaro.ch.');
+    });
+  });
+})();
+</script>
+</body>
+</html>
