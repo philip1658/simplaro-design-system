@@ -15,6 +15,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "robotX": 0,
   "vignette": true,
   "stampStyle": "tinte",
+  "stampText": "KOSTENLOSE ONLINE-ERSTANALYSE",
   "stampPosX": 69.6,
   "stampPosY": 46,
   "stampWidth": 550,
@@ -88,7 +89,8 @@ function App() {
         <TweakSlider label="Grösse" value={tweaks.robotHeight} min={36} max={78} step={1} unit="vh" onChange={(v) => setTweak('robotHeight', v)} />
         <TweakSection label="Hero-Layout" />
         <TweakSlider label="Headline · Abstand oben" value={tweaks.headlineTop} min={12} max={28} step={1} unit="vh" onChange={(v) => setTweak('headlineTop', v)} />
-        <TweakSection label="Sprechblase" />
+        <TweakSection label="Erstanalyse-Stempel" />
+        <TweakText label="Text" value={tweaks.stampText} placeholder="KOSTENLOSE ONLINE-ERSTANALYSE" onChange={(v) => setTweak('stampText', v)} />
         <TweakRadio label="Stil" value={tweaks.stampStyle} options={['comic', 'glas', 'tinte']} onChange={(v) => setTweak('stampStyle', v)} />
         <TweakSlider label="Position X" value={tweaks.stampPosX} min={20} max={90} step={0.5} unit="%" onChange={(v) => setTweak('stampPosX', v)} />
         <TweakSlider label="Abstand unten" value={tweaks.stampPosY} min={20} max={72} step={1} unit="vh" onChange={(v) => setTweak('stampPosY', v)} />

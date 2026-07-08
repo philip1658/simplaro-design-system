@@ -1,23 +1,31 @@
 /* ============================================================
    simplaro.ch — Mobile-Optimierung
    Responsive Overrides über den Inline-Styles der Sektionen.
-   Breakpoints: 1120 · 920 (Header) · 700 (Phones) · 480 (klein)
+   Breakpoints: 1120 · 1080 (Header) · 700 (Phones) · 480 (klein)
    ============================================================ */
 
 /* Mobile-Header standardmässig aus (Desktop zeigt SiteHeader) */
 .header-mobile { display: none; }
 .chat-fab-short { display: none; }
+.hero-stamp-mobile { display: none; }
+
+/* DSGVO-Siegel: federnder Hover-Lift; bei sehr flachen Fenstern kollidiert es mit dem Chat-Button → im Hero ausblenden (bleibt in der Datenschutz-Karte) */
+.dsgvo-siegel { transition: transform 0.4s var(--ease-spring); }
+.dsgvo-siegel:hover { transform: translateY(-5px); }
+@media (max-height: 640px) {
+  .hero-siegel { display: none !important; }
+}
 
 /* Touch: kein graues Tap-Highlight */
 a, button, summary { -webkit-tap-highlight-color: transparent; }
 
-/* ── ≤1120px: Hero-Sprechblase ausblenden ────────────────── */
+/* ── ≤1120px: Hero-Stempel zentrieren (Tweak-Position ist für Desktop gesetzt) ── */
 @media (max-width: 1120px) {
-  .hero-stamp { display: none !important; }
+  .hero-stamp { left: 50% !important; bottom: 47vh !important; max-width: calc(100vw - 44px) !important; }
 }
 
-/* ── ≤920px: Burger-Header statt Desktop-Nav ─────────────── */
-@media (max-width: 920px) {
+/* ── ≤1080px: Burger-Header statt Desktop-Nav (5 Links + CTA brauchen ~1060px) ─────────────── */
+@media (max-width: 1080px) {
   .header-desktop { display: none; }
   .header-mobile { display: block; }
 }
@@ -31,11 +39,18 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .hero-headline { top: 12vh !important; padding: 0 22px; }
   #top h1 { font-size: clamp(29px, 8.4vw, 40px) !important; hyphens: auto; overflow-wrap: break-word; }
   .hero-pills { gap: 8px !important; margin-top: 18px !important; padding: 0 20px; }
-  .hero-pill { white-space: normal !important; text-align: center; padding: 8px 16px !important; font-size: 13px !important; }
+  .hero-pill { white-space: nowrap !important; text-align: center; padding: 8px 14px !important; font-size: clamp(10.5px, 3.3vw, 13px) !important; }
   .hero-robot { height: 44svh !important; bottom: 1svh !important; }
   .hero-robot > div { left: -6px !important; } /* Roboter mobil leicht nach links */
   .hero-brand, .hero-brand-link { display: none !important; }
   .hero-vignette { left: 0 !important; top: 0 !important; }
+
+  /* Erstanalyse-Stempel: mobil im Headline-Stapel statt frei schwebend */
+  .hero-stamp { display: none !important; }
+  .hero-siegel { display: none !important; }
+  .hero-stamp-mobile { display: inline-flex; align-items: center; gap: 8px; pointer-events: auto; margin-top: 16px; background: var(--ink-950); color: var(--cream-50); border-radius: 12px; padding: 12px 18px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-decoration: none; box-shadow: var(--shadow-soft); }
+  .hero-stamp-mobile:hover { color: var(--cream-50); }
+  .hero-stamp-mobile > span { color: var(--orange-300); }
 
   /* Sektionen: kompakteres Padding, saubere Umbrüche */
   main section > div { padding: 56px 20px !important; }
@@ -76,6 +91,14 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 480px) {
   #top h1 { font-size: clamp(27px, 8.6vw, 34px) !important; }
   main section > div { padding: 48px 18px !important; }
+}
+
+/* ── Kurze Phones (z.B. iPhone SE): Hero kompakter stapeln ── */
+@media (max-width: 700px) and (max-height: 720px) {
+  .hero-robot { height: 40svh !important; }
+  .hero-pills { gap: 6px !important; margin-top: 14px !important; }
+  .hero-stamp-mobile { margin-top: 12px; padding: 10px 16px; }
+  .hero-headline { top: 10vh !important; }
 }
 
 /* Menü-Overlay: sanfte Einblendung */

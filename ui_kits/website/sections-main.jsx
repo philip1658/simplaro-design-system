@@ -55,6 +55,9 @@ function BuerobotVideo() {
         url = URL.createObjectURL(b);
         const v = ref.current;
         if (!v) return;
+        v.muted = true;
+        v.defaultMuted = true;
+        v.volume = 0;
         v.src = url;
         v.play().catch(() => {});
       })
@@ -128,6 +131,7 @@ function Ablauf() {
               Ihre Daten verdienen<br /><span style={{ color: 'var(--terra-500)' }}>Vertrauen und Schutz.</span>
             </h3>
             <p style={{ margin: 0, fontSize: 15.5, lineHeight: 1.7, color: 'var(--text-body)', maxWidth: '48ch' }}>Wir verpflichten uns, Personendaten im Einklang mit dem geltenden Schweizer Datenschutzgesetz zu bearbeiten. Datenschutz berücksichtigen wir von der Planung bis zur Umsetzung jeder digitalen Lösung.</p>
+            <DsgvoSiegel size={116} rotate={-6} style={{ marginTop: 10 }} />
           </div>
           <ul style={{ display: 'flex', flexDirection: 'column', listStyle: 'none', margin: 0, padding: 0 }}>
             <li style={{ display: 'flex', gap: 14, padding: '16px 0', borderBottom: '1px solid var(--border-strong)' }}>

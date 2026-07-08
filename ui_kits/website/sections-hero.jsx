@@ -1,7 +1,7 @@
 const { Kicker, Button, Twinkle } = window.SimplaroDesignSystem_5f353f;
 
 /* Statischer Hero: Terra-Bühne, Büro-Bot-Standbild (Poster), Headline, Markenzeilen. */
-const HERO_DEFAULTS = { headlineTop: 17, robotBottom: 2, robotHeight: 56, robotX: 0, vignette: true, stampStyle: 'tinte', stampPosX: 69.6, stampPosY: 46, stampWidth: 550, stampRotate: 0, stampFontSize: 12, stampRadius: 18, stampTail: false, stampTailX: 26, stampTailSize: 26 };
+const HERO_DEFAULTS = { headlineTop: 17, robotBottom: 2, robotHeight: 56, robotX: 0, vignette: true, stampStyle: 'tinte', stampText: 'KOSTENLOSE ONLINE-ERSTANALYSE', stampPosX: 69.6, stampPosY: 46, stampWidth: 550, stampRotate: 0, stampFontSize: 12, stampRadius: 18, stampTail: false, stampTailX: 26, stampTailSize: 26 };
 
 function Hero({ tweaks }) {
   const t = { ...HERO_DEFAULTS, ...tweaks };
@@ -42,17 +42,16 @@ function Hero({ tweaks }) {
       </div>
 
       {/* Sprechblase/Stempel — eigenständig im Viewport verankert (unabhängig vom Roboter), volle Kontrolle über Tweaks */}
-      <div className="hero-stamp" style={{ position: 'absolute', zIndex: 35, left: `${t.stampPosX}%`, bottom: `${t.stampPosY}vh`, transform: `translateX(-50%) rotate(${t.stampRotate}deg)`, width: 'max-content', maxWidth: t.stampWidth, display: 'flex', flexDirection: 'column', gap: 10, borderRadius: t.stampRadius, padding: '16px 22px', ...stampBoxStyle }}>
+      <a className="hero-stamp" href="erstanalyse.html" aria-label="Kostenlose Online-Erstanalyse öffnen" style={{ position: 'absolute', zIndex: 35, left: `${t.stampPosX}%`, bottom: `${t.stampPosY}vh`, transform: `translateX(-50%) rotate(${t.stampRotate}deg)`, width: 'max-content', maxWidth: t.stampWidth, display: 'flex', flexDirection: 'column', gap: 10, borderRadius: t.stampRadius, padding: '16px 22px', textDecoration: 'none', cursor: 'pointer', ...stampBoxStyle }}>
         <span style={stampRowStyle}>
           <span aria-hidden="true" style={stampCheckStyle}>✓</span>
-          <span>MASSGESCHNEIDERT AUF IHRE ZIELE</span>
-        </span>
-        <span style={stampRowStyle}>
-          <span aria-hidden="true" style={stampCheckStyle}>✓</span>
-          <span>DSGVO-KONFORM</span>
+          <span>{t.stampText || 'KOSTENLOSE ONLINE-ERSTANALYSE'}</span>
         </span>
         {t.stampTail ? <span aria-hidden="true" style={{ position: 'absolute', left: `${t.stampTailX}%`, bottom: -(Math.round(t.stampTailSize * 0.6)), width: t.stampTailSize, height: t.stampTailSize, transform: 'translateX(-50%) rotate(45deg)', background: kind === 'comic' ? 'var(--surface-card)' : kind === 'glas' ? 'rgba(255,244,236,0.12)' : 'var(--ink-950)', borderRight: kind === 'comic' ? '2px solid var(--border-ink)' : kind === 'glas' ? '1.5px solid rgba(251,244,238,0.8)' : 'none', borderBottom: kind === 'comic' ? '2px solid var(--border-ink)' : kind === 'glas' ? '1.5px solid rgba(251,244,238,0.8)' : 'none', backdropFilter: kind === 'glas' ? 'blur(6px)' : undefined, WebkitBackdropFilter: kind === 'glas' ? 'blur(6px)' : undefined }}></span> : null}
-      </div>
+      </a>
+
+      {/* DSGVO-Siegel — Desktop/Tablet im Hero, mobil in der Datenschutz-Karte */}
+      <DsgvoSiegel className="hero-siegel" style={{ position: 'absolute', zIndex: 36, right: '7vw', bottom: '12vh' }} />
 
       {/* Headline */}
       <div className="hero-headline" style={{ position: 'absolute', zIndex: 30, left: 0, right: 0, top: `${t.headlineTop}vh`, pointerEvents: 'none', color: 'var(--cream-50)', textAlign: 'center' }}>
@@ -62,8 +61,12 @@ function Hero({ tweaks }) {
         <div className="hero-pills" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 'clamp(10px, 1.4vw, 18px)', flexWrap: 'wrap', marginTop: 'clamp(18px, 2.6vh, 30px)', fontSize: 'clamp(12.5px, 1.05vw, 16.5px)', fontWeight: 600, letterSpacing: '0.06em' }}>
           <span className="hero-pill" style={{ display: 'flex', alignItems: 'baseline', gap: 9, whiteSpace: 'nowrap', background: 'rgba(255,244,236,0.12)', border: '1px solid rgba(255,255,255,0.32)', borderRadius: 999, padding: '10px 20px', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}><span style={{ fontSize: '0.78em', color: 'var(--peach-200)' }}>01</span><span style={{ fontWeight: 700 }}>Standortbestimmung</span></span>
           <span className="hero-pill" style={{ display: 'flex', alignItems: 'baseline', gap: 9, whiteSpace: 'nowrap', background: 'rgba(255,244,236,0.12)', border: '1px solid rgba(255,255,255,0.32)', borderRadius: 999, padding: '10px 20px', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}><span style={{ fontSize: '0.78em', color: 'var(--peach-200)' }}>02</span><span style={{ fontWeight: 700 }}>Implementierung</span></span>
-          <span className="hero-pill" style={{ display: 'flex', alignItems: 'baseline', gap: 9, whiteSpace: 'nowrap', background: 'rgba(255,244,236,0.12)', border: '1px solid rgba(255,255,255,0.32)', borderRadius: 999, padding: '10px 20px', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}><span style={{ fontSize: '0.78em', color: 'var(--peach-200)' }}>03</span><span style={{ fontWeight: 700 }}>Trainings &amp; Nachhaltige Begleitung</span></span>
+          <span className="hero-pill" style={{ display: 'flex', alignItems: 'baseline', gap: 9, whiteSpace: 'nowrap', background: 'rgba(255,244,236,0.12)', border: '1px solid rgba(255,255,255,0.32)', borderRadius: 999, padding: '10px 20px', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}><span style={{ fontSize: '0.78em', color: 'var(--peach-200)' }}>03</span><span style={{ fontWeight: 700 }}>Trainings &amp; nachhaltige Begleitung</span></span>
         </div>
+        <a className="hero-stamp-mobile" href="erstanalyse.html" aria-label="Kostenlose Online-Erstanalyse öffnen">
+          <span aria-hidden="true">✓</span>
+          {t.stampText || 'KOSTENLOSE ONLINE-ERSTANALYSE'}
+        </a>
       </div>
 
       {/* Markenzeilen unten */}
